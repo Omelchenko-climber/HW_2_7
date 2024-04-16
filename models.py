@@ -19,6 +19,9 @@ class Group(Base):
     group_number: Mapped[int] = mapped_column(nullable=False)
     students: Mapped[list["Student"]] = relationship(back_populates="group")
 
+    def __init__(self, number):
+        self.group_number = number
+
     def __repr__(self):
         return f"Group number: {self.group_number}"
 
@@ -33,9 +36,8 @@ class Student(Base):
     student_grade: Mapped["Grade"] = relationship(back_populates="grade_student", cascade="all, delete-orphan")
     group: Mapped["Group"] = relationship(back_populates="students")
 
-    def __init__(self, name, group=1):
+    def __init__(self, name):
         self.student_name = name
-        self.group_id = group
 
     def __repr__(self):
         return f"Student: {self.student_name}"
@@ -47,6 +49,9 @@ class Teacher(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     teacher_name: Mapped[str] = mapped_column(String(30), nullable=False)
     teacher_subjects: Mapped[list["Subject"]] = relationship(back_populates="teacher")
+
+    def __init__(self, name):
+        self.teacher_name = name
 
     def __repr__(self):
         return f"Teacher: {self.teacher_name}, subjects: {self.teacher_subjects}"
@@ -61,6 +66,10 @@ class Subject(Base):
 
     teacher: Mapped["Teacher"] = relationship(back_populates="teacher_subjects")
     subject_grades: Mapped[list["Grade"]] = relationship(back_populates="subject")
+
+    def __init__(self, subject, teach_id=1):
+        self.subject_name = subject
+        self.teacher_id = teach_id
 
     def __repr__(self):
         return f"Subject: {self.subject_name}"
