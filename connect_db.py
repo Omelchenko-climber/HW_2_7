@@ -12,7 +12,7 @@ username = "postgres"
 password = os.getenv("DB_PASS")
 host = "localhost"
 port = 5432
-database = "my_hw"
+database = "postgres"
 
 DB_URL = URL.create(
     drivername=dialect,
